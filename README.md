@@ -1,10 +1,8 @@
 <!-- Project Shields -->
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 <!-- Project Logo + Table of Contents -->
 <br />
@@ -13,10 +11,10 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">project_title</h3>
+  <h3 align="center">App Name Here</h3>
 
   <p align="center">
-    project_description
+    An App for EC463 using REST API and FDA's Food Data API.
     <br />
     <a href="https://github.com/jasoninirio/Software-Miniproject"><strong>Explore the docs »</strong></a>
     <br />
@@ -24,8 +22,6 @@
     <a href="https://github.com/jasoninirio/Software-Miniproject">View Demo</a>
     ·
     <a href="https://github.com/jasoninirio/Software-Miniproject/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/jasoninirio/Software-Miniproject/issues">Request Feature</a>
   </p>
 </p>
 
