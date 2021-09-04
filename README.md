@@ -1,9 +1,9 @@
 <!-- Project Shields -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+![GitHub contributors](https://img.shields.io/github/contributors/jasoninirio/Software-Miniproject)
+[![GitHub issues](https://img.shields.io/github/issues/jasoninirio/Software-Miniproject)](https://github.com/jasoninirio/Software-Miniproject/issues)
+[![GitHub license](https://img.shields.io/github/license/jasoninirio/Software-Miniproject)](https://github.com/jasoninirio/Software-Miniproject/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/jasoninirio/Software-Miniproject)](https://github.com/jasoninirio/Software-Miniproject/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/jasoninirio/Software-Miniproject)](https://github.com/jasoninirio/Software-Miniproject/network)
 
 <!-- Project Logo + Table of Contents -->
 <br />
@@ -38,15 +38,3 @@ We can add an overview here
 
 ## Resources
 [Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)
-
-<!-- Refernece Link -->
-[contributors-shield]: https://img.shields.io/github/contributors/jasoninirio/Software-Miniproject
-[contributors-url]: https://github.com/jasoninirio/Software-Miniproject/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/jasoninirio/Software-Miniproject
-[forks-url]: https://github.com/jasoninirio/Software-Miniproject/network/members
-[stars-shield]: https://img.shields.io/github/stars/jasoninirio/Software-Miniproject
-[stars-url]: https://github.com/jasoninirio/Software-Miniproject/stargazers
-[issues-shield]: https://img.shields.io/github/issues/jasoninirio/Software-Miniproject
-[issues-url]: https://github.com/jasoninirio/Software-Miniproject/issues
-[license-shield]: https://img.shields.io/github/license/jasoninirio/Software-Miniproject
-[license-url]: https://github.com/jasoninirio/Software-Miniproject/blob/main/LICENSE
