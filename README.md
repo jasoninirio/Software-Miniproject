@@ -40,13 +40,13 @@ We can add an overview here
 [Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)
 
 <!-- Refernece Link -->
-[contributors-shield]: https://img.shields.io/github/contributors/jasoninirio/Software-Miniproject/repo.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/jasoninirio/Software-Miniproject
 [contributors-url]: https://github.com/jasoninirio/Software-Miniproject/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/jasoninirio/Software-Miniproject/repo.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/jasoninirio/Software-Miniproject
 [forks-url]: https://github.com/jasoninirio/Software-Miniproject/network/members
-[stars-shield]: https://img.shields.io/github/stars/jasoninirio/Software-Miniproject/repo.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/jasoninirio/Software-Miniproject
 [stars-url]: https://github.com/jasoninirio/Software-Miniproject/stargazers
-[issues-shield]: https://img.shields.io/github/issues/jasoninirio/Software-Miniproject/repo.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/jasoninirio/Software-Miniproject
 [issues-url]: https://github.com/jasoninirio/Software-Miniproject/issues
-[license-shield]: https://img.shields.io/github/license/jasoninirio/Software-Miniproject/repo.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/jasoninirio/Software-Miniproject
 [license-url]: https://github.com/jasoninirio/Software-Miniproject/blob/main/LICENSE
