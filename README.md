@@ -37,5 +37,5 @@ We can add an overview here
 * [FDA FoodData API](https://fdc.nal.usda.gov/api-guide.html)
 
 ## Resources
-[Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)
+[Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)  
 [PageView Flutter Widget](https://medium.com/flutter-community/flutter-pageview-widget-e0f6c8092636)
