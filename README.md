@@ -12,10 +12,10 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
 
-  <h3 align="center">App Name Here</h3>
+  <h3 align="center">healthi</h3>
 
   <p align="center">
-    An App for EC463 using REST API and FDA's Food Data API.
+    An App for EC463 built using Flutter and Firebase, using FDA's Food Data API to show food information!
     <br />
     <a href="https://github.com/jasoninirio/Software-Miniproject"><strong>Explore the docs »</strong></a>
     <br />
