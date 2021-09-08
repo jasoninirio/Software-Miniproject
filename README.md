@@ -38,3 +38,4 @@ We can add an overview here
 
 ## Resources
 [Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)
+[PageView Flutter Widget](https://medium.com/flutter-community/flutter-pageview-widget-e0f6c8092636)
