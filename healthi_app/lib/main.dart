@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('healthi'),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.yellow,
       ),
       body: Center(
         child: Column(
