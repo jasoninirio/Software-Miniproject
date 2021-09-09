@@ -42,3 +42,4 @@ We can add an overview here
 [Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)
 [Calories Calculator](https://www.checkyourhealth.org/eat-healthy/cal_calculator.php)
 [Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart?authuser=1)
+[Gmail Login](https://pub.dev/packages/google_sign_in)
