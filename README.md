@@ -36,6 +36,8 @@ We can add an overview here
 * [REST API](https://restfulapi.net/)
 * [FDA FoodData API](https://fdc.nal.usda.gov/api-guide.html)
 
-## Resources
+## Resources and Dependencies
 [Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)  
 [PageView Flutter Widget](https://medium.com/flutter-community/flutter-pageview-widget-e0f6c8092636)
+[Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)
+[calories calculator](https://www.checkyourhealth.org/eat-healthy/cal_calculator.php)
