@@ -87,9 +87,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
       if (result != null) {
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => HomePage()));
+            context, MaterialPageRoute(builder: (context) => App_PageView()));
       } // if result not null we simply call the MaterialpageRoute,
-      // for go to the HomePage screen
+      // for go to the main app screen
     }
   }
 }
