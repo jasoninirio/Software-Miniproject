@@ -22,10 +22,10 @@ class _SignIn_state extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Login Screen',
+      title: 'Healthi App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.green,
+        primaryColor: Colors.green,
       ),
       home: LoginScreen(),
     );

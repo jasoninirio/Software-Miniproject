@@ -20,27 +20,20 @@ class _LoginScreenState extends State<LoginScreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.blue,
-              Colors.red,
-            ],
-          ),
+          color: Colors.greenAccent[400],
         ),
         child: Card(
           margin: EdgeInsets.only(top: 200, bottom: 200, left: 30, right: 30),
           elevation: 20,
+          color: Colors.greenAccent[300],
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Text(
-                "GEEKS FOR GEEKS",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-              ),
+              Image(image: AssetImage('assets/logo_full.png')),
               Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: MaterialButton(
-                    color: Colors.teal[100],
+                    color: Colors.white,
                     elevation: 10,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
