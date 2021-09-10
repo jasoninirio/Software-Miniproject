@@ -37,10 +37,10 @@ We can add an overview here
 * [FDA FoodData API](https://fdc.nal.usda.gov/api-guide.html)
 
 ## Resources and Dependencies
-[Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)
-[GeeksForGeeks - Gmail Login](https://www.geeksforgeeks.org/flutter-google-sign-in-ui-and-authentication/)
-[PageView Flutter Widget](https://medium.com/flutter-community/flutter-pageview-widget-e0f6c8092636)
-[Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)
-[Calories Calculator](https://www.checkyourhealth.org/eat-healthy/cal_calculator.php)
-[Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart?authuser=1)
-[Gmail Login](https://pub.dev/packages/google_sign_in)
+[Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)  
+[GeeksForGeeks - Gmail Login](https://www.geeksforgeeks.org/flutter-google-sign-in-ui-and-authentication/)  
+[PageView Flutter Widget](https://medium.com/flutter-community/flutter-pageview-widget-e0f6c8092636)  
+[Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)  
+[Calories Calculator](https://www.checkyourhealth.org/eat-healthy/cal_calculator.php)  
+[Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart?authuser=1)  
+[Gmail Login](https://pub.dev/packages/google_sign_in)  
