@@ -1,4 +1,5 @@
 // import 'dart:js';
+// --no-sound-null-safety
 import 'dart:async';
 import 'dart:convert' show json;
 
@@ -19,10 +20,10 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
 void main() {
   Firebase.initializeApp();
   runApp(MaterialApp(
-    home: SignInPage(),
     initialRoute: '/',
     routes: {
-      '/': (context) => HomePage(),
+      '/': (context) => SignInPage(),
+      '/home': (context) => HomePage(),
       '/camera': (context) => CameraPage(),
       '/profile': (context) => ProfilePage(),
     },
@@ -103,6 +104,7 @@ class SignInState extends State<SignInPage> {
   Future<void> _handleSignIn() async {
     try {
       await _googleSignIn.signIn();
+      Navigator.pushNamed(context, '/home');
     } catch (error) {
       print(error);
     }
@@ -210,7 +212,7 @@ class CameraPage extends StatelessWidget {
             // Back Button
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/home');
                 },
                 child: Text('Go Back')),
           ],
@@ -235,7 +237,7 @@ class ProfilePage extends StatelessWidget {
             // Back Button
             ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/home');
                 },
                 child: Text('Go Back')),
           ],
