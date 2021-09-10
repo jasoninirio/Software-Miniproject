@@ -1,96 +1,33 @@
-// import 'dart:js'
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:healthi_app/login.dart';
 
-void main() {
-  runApp(MaterialApp(
-    initialRoute: '/',
-    routes: {
-      '/': (context) => HomePage(),
-      '/camera': (context) => CameraPage(),
-      '/profile': (context) => ProfilePage(),
-    },
-  ));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // init firebase
+  await Firebase.initializeApp();
+
+  // init app
+  runApp(SignIn());
 }
 
-// Home Page - hosts some neat things like a calorie tracker (?)
-class HomePage extends StatelessWidget {
+class SignIn extends StatefulWidget {
+  // SignIn({key? key}) : super(key: key);
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('healthi'),
-        centerTitle: true,
-        backgroundColor: Colors.yellow,
-      ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            // Camera Button
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/camera');
-                },
-                child: Text('Camera')),
-
-            // Profile Button
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/profile');
-                },
-                child: Text('Profile')),
-          ],
-        ),
-      ),
-    );
-  }
+  _SignIn_state createState() => _SignIn_state();
 }
 
-// Camera Page - hosts the camera and a search bar to add food items to User's food tracker
-class CameraPage extends StatelessWidget {
+class _SignIn_state extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('camera'),
-        backgroundColor: Colors.orange,
+    return MaterialApp(
+      title: 'Healthi App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primaryColor: Colors.green,
       ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            // Back Button
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Go Back')),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// Profile Page - Shows first and last name, recipes, and history stats of User's food items (?)
-class ProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('profile'),
-        backgroundColor: Colors.blueGrey,
-      ),
-      body: Center(
-        child: Column(
-          children: <Widget>[
-            // Back Button
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Text('Go Back')),
-          ],
-        ),
-      ),
+      home: LoginScreen(),
     );
   }
 }
