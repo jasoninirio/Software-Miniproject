@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(MaterialApp(
@@ -62,16 +63,16 @@ class _CameraPageState extends State<CameraPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('camera'),
-        backgroundColor: Colors.orange,
-      ),
+          title: Text('Scan a Food Item!'),
+          centerTitle: true,
+          backgroundColor: Colors.tealAccent[700]),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton.icon(
               style: ElevatedButton.styleFrom(
-                  primary: Colors.amber, onPrimary: Colors.black),
+                  primary: Colors.greenAccent[700], onPrimary: Colors.black),
               icon: Icon(Icons.camera_alt_outlined),
               label: Text('Start Scan'),
               onPressed: scanBarcode,
@@ -79,7 +80,7 @@ class _CameraPageState extends State<CameraPage> {
             SizedBox(height: 20),
             Text(
               scanResult == null
-                  ? 'Scan a code!'
+                  ? 'Scan a barcode!'
                   : 'Your scanned result: $scanResult',
               style: TextStyle(fontSize: 18),
             )
