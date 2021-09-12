@@ -78,7 +78,9 @@ class _CameraPageState extends State<CameraPage> {
             ),
             SizedBox(height: 20),
             Text(
-              scanResult == null ? 'Scan a code!' : 'Scan result: $scanResult',
+              scanResult == null
+                  ? 'Scan a code!'
+                  : 'Your scanned result: $scanResult',
               style: TextStyle(fontSize: 18),
             )
             // Back Button
