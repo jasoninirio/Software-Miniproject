@@ -148,7 +148,7 @@ class _CameraPageState extends State<CameraPage> {
                       Text(
                         'Calories: ' +
                             (snapshot.data!.calories).toString() +
-                            ' calories',
+                            ' kcal',
                         style: TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
                       )
