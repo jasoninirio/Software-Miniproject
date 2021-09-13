@@ -10,7 +10,7 @@
 .svn/
 *.env
 *.plist
-/android/app/google-services.json
+; /android/app/google-services.json
 **/ios/Runner/.plist
 
 # IntelliJ related
