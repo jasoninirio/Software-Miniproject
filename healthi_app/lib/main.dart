@@ -177,7 +177,7 @@ class _CameraPageState extends State<CameraPage> {
 
     try {
       scanResult = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.BARCODE);
+          "#6CEE5D", "Cancel", true, ScanMode.BARCODE);
     } on PlatformException {
       scanResult = 'Failed to get platform version.';
     }
