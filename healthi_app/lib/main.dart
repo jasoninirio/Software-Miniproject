@@ -1,10 +1,34 @@
 // import 'dart:js'
 // import 'dart:html';
+import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:http/http.dart' as http;
+
+//Class for the relevant info extracted from the FDC rest API
+class FoodInfo {
+  final String gtinUpc;
+  final int fdcId;
+  final String description;
+  final int calories;
+
+  FoodInfo(
+      {required this.gtinUpc,
+      required this.fdcId,
+      required this.description,
+      required this.calories});
+
+  factory FoodInfo.fromJson(Map<String, dynamic> json) {
+    return FoodInfo(
+        gtinUpc: json['foods'][0]['gtinUpc'],
+        fdcId: json['foods'][0]['fdcId'],
+        description: json['foods'][0]['description'],
+        calories: json['foods'][0]['foodNutrients'][3]['value']);
+  }
+}
 
 void main() {
   runApp(MaterialApp(
@@ -58,6 +82,13 @@ class CameraPage extends StatefulWidget {
 // Camera Page - hosts the camera and a search bar to add food items to User's food tracker
 class _CameraPageState extends State<CameraPage> {
   String? scanResult;
+  late Future<FoodInfo> futureFoodInfo;
+
+  @override
+  void initState() {
+    super.initState();
+    futureFoodInfo = fetchFoodInfo();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,6 +114,50 @@ class _CameraPageState extends State<CameraPage> {
                   ? 'Scan a barcode!'
                   : 'Your scanned result: $scanResult',
               style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 60),
+            Center(
+              child: FutureBuilder<FoodInfo>(
+                future: futureFoodInfo,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Column(children: <Widget>[
+                      Text(
+                        'Food Item Name: ' +
+                            (snapshot.data!.description).toString(),
+                        style: TextStyle(fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Barcode number: ' +
+                            (snapshot.data!.gtinUpc).toString(),
+                        style: TextStyle(fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'FDC ID Number: ' + (snapshot.data!.fdcId).toString(),
+                        style: TextStyle(fontSize: 18),
+                        textAlign: TextAlign.center,
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        'Calories: ' +
+                            (snapshot.data!.calories).toString() +
+                            ' calories',
+                        style: TextStyle(fontSize: 18),
+                        textAlign: TextAlign.center,
+                      )
+                    ]);
+                  } else if (snapshot.hasError) {
+                    return Text('${snapshot.error}');
+                  }
+
+                  // By default, show a loading spinner.
+                  return const CircularProgressIndicator();
+                },
+              ),
             )
             // Back Button
             // ElevatedButton(
@@ -110,6 +185,21 @@ class _CameraPageState extends State<CameraPage> {
     if (!mounted) return;
 
     setState(() => this.scanResult = scanResult);
+  }
+
+  Future<FoodInfo> fetchFoodInfo() async {
+    // String url =
+    //     'https://api.nal.usda.gov/fdc/v1/foods/search?&api_key=K5TALOAH4AWhPCKKbZsz1gIzRgnNuaC2OPB1lhsR&query=' +
+    //         scanResult.toString() +
+    //         '&dataType=Branded';
+    final response = await http.get(Uri.parse(
+        'https://api.nal.usda.gov/fdc/v1/foods/search?&api_key=K5TALOAH4AWhPCKKbZsz1gIzRgnNuaC2OPB1lhsR&query=041318251777&dataType=Branded'));
+
+    if (response.statusCode == 200) {
+      return FoodInfo.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception('Failed to load food info');
+    }
   }
 }
 
