@@ -13,7 +13,7 @@ class FoodInfo {
   final String gtinUpc;
   final int fdcId;
   final String description;
-  final int calories;
+  final num calories;
 
   FoodInfo(
       {required this.gtinUpc,
@@ -81,20 +81,15 @@ class CameraPage extends StatefulWidget {
 
 // Camera Page - hosts the camera and a search bar to add food items to User's food tracker
 class _CameraPageState extends State<CameraPage> {
-  String scanResult = '0';
+  String? scanResult = null;
   late Future<FoodInfo> futureFoodInfo;
-  String url =
-      'https://api.nal.usda.gov/fdc/v1/foods/search?&api_key=K5TALOAH4AWhPCKKbZsz1gIzRgnNuaC2OPB1lhsR&query=';
+  String myCode = '035107001247';
 
   @override
   void initState() {
     super.initState();
-    // scanResult == null
-    //     ? url =
-    //         'https://api.nal.usda.gov/fdc/v1/foods/search?&api_key=K5TALOAH4AWhPCKKbZsz1gIzRgnNuaC2OPB1lhsR&query='
-    //     : url =
-    //         'https://api.nal.usda.gov/fdc/v1/foods/search?&api_key=K5TALOAH4AWhPCKKbZsz1gIzRgnNuaC2OPB1lhsR&query=$scanResult&dataType=Branded';
-    futureFoodInfo = fetchFoodInfo();
+
+    // futureFoodInfo = fetchFoodInfo();
   }
 
   @override
@@ -117,7 +112,7 @@ class _CameraPageState extends State<CameraPage> {
             ),
             SizedBox(height: 20),
             Text(
-              scanResult == '0'
+              scanResult == null
                   ? 'Scan a barcode first!'
                   : 'Your scanned result: $scanResult',
               style: TextStyle(fontSize: 20),
@@ -125,9 +120,9 @@ class _CameraPageState extends State<CameraPage> {
             SizedBox(height: 60),
             Center(
               child: FutureBuilder<FoodInfo>(
-                future: futureFoodInfo,
+                future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
-                  if (snapshot.hasData && scanResult != '0') {
+                  if (snapshot.hasData && scanResult != null) {
                     return Column(children: <Widget>[
                       Text(
                         'Food Item Name: ' +
@@ -166,13 +161,12 @@ class _CameraPageState extends State<CameraPage> {
                 },
               ),
             ),
-            // Back Button
+            // //Back Button
             // ElevatedButton(
             //     onPressed: () {
-            //       Navigator.pop(context);
+            //       scanResult = null;
             //     },
-            //     child: Text('Go Back')
-            // ),
+            //     child: Text('Scan new item')),
           ],
         ),
       ),
@@ -194,13 +188,9 @@ class _CameraPageState extends State<CameraPage> {
     setState(() => this.scanResult = scanResult);
   }
 
-  Future<FoodInfo> fetchFoodInfo() async {
-    // String url =
-    //     'https://api.nal.usda.gov/fdc/v1/foods/search?&api_key=K5TALOAH4AWhPCKKbZsz1gIzRgnNuaC2OPB1lhsR&query=' +
-    //         scanResult +
-    //         '&dataType=Branded';
+  Future<FoodInfo> fetchFoodInfo(String barcode) async {
     final response = await http.get(Uri.parse(
-        'https://api.nal.usda.gov/fdc/v1/foods/search?&api_key=K5TALOAH4AWhPCKKbZsz1gIzRgnNuaC2OPB1lhsR&query=804879265580&dataType=Branded'));
+        'https://api.nal.usda.gov/fdc/v1/foods/search?&api_key=K5TALOAH4AWhPCKKbZsz1gIzRgnNuaC2OPB1lhsR&query=$barcode&dataType=Branded'));
 
     if (response.statusCode == 200) {
       return FoodInfo.fromJson(jsonDecode(response.body));
