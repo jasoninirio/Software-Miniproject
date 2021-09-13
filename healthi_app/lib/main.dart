@@ -114,8 +114,9 @@ class _CameraPageState extends State<CameraPage> {
             Text(
               scanResult == null
                   ? 'Scan a barcode first!'
-                  : 'Your scanned result: $scanResult',
+                  : 'You scanned the barcode: $scanResult',
               style: TextStyle(fontSize: 20),
+              textAlign: TextAlign.center,
             ),
             SizedBox(height: 60),
             Center(
