@@ -98,7 +98,8 @@ class _CameraPageState extends State<CameraPage> {
       appBar: AppBar(
           title: Text('Scan a Food Item!'),
           centerTitle: true,
-          backgroundColor: Colors.tealAccent[700]),
+          backgroundColor: Colors.greenAccent[700]),
+      backgroundColor: Colors.lime[100],
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
