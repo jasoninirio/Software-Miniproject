@@ -107,7 +107,7 @@ class _CameraPageState extends State<CameraPage> {
               style: ElevatedButton.styleFrom(
                   primary: Colors.greenAccent[700], onPrimary: Colors.black),
               icon: Icon(Icons.camera_alt_outlined),
-              label: Text('Start Scan'),
+              label: Text('Start Scan', style: TextStyle(fontSize: 25)),
               onPressed: scanBarcode,
             ),
             SizedBox(height: 20),
@@ -115,7 +115,7 @@ class _CameraPageState extends State<CameraPage> {
               scanResult == null
                   ? 'Scan a barcode first!'
                   : 'You scanned the barcode: $scanResult',
-              style: TextStyle(fontSize: 20),
+              style: TextStyle(fontSize: 23),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 60),
