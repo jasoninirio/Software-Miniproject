@@ -7,15 +7,29 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:healthi_app/main_app.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:splash_screen_view/SplashScreenView.dart';
 
 // Connecting to Cloud Firestore
 final firestoreInstance = FirebaseFirestore.instance;
 
 // User Credentials for App
-class userLogin {
+class UserLogin {
   static String firstName = '';
   static String lastName = '';
   static String idToken = '';
+}
+
+class Splash extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SplashScreenView(
+      navigateRoute: LoginScreen(),
+      duration: 3000,
+      imageSize: 130,
+      imageSrc: "assets/logo_full.png",
+      backgroundColor: Colors.white,
+    );
+  }
 }
 
 class LoginScreen extends StatefulWidget {
@@ -33,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
-          color: Colors.greenAccent[400],
+          color: Colors.greenAccent[100],
         ),
         child: Card(
           margin: EdgeInsets.only(top: 200, bottom: 200, left: 30, right: 30),
@@ -115,25 +129,18 @@ class _LoginScreenState extends State<LoginScreen> {
       // Get Credentials from login
       Map<String, dynamic> idMap = parseJwt(idToken!);
 
-      userLogin.firstName = idMap["given_name"];
-      userLogin.lastName = idMap["family_name"];
-      userLogin.idToken = idToken;
+      UserLogin.firstName = idMap["given_name"];
+      UserLogin.lastName = idMap["family_name"];
+      UserLogin.idToken = idToken;
 
       // Add to Cloud FireStore
       if (result != null) {
         firestoreInstance.collection('Users').doc(user!.uid).set({
-          "Name": "${userLogin.firstName} ${userLogin.lastName}",
+          "Name": "${UserLogin.firstName} ${UserLogin.lastName}",
           "Recipes": [],
         }).then((_) {
           print("Success!");
         });
-
-        // Get Credentials from login
-        Map<String, dynamic> idMap = parseJwt(idToken!);
-
-        userLogin.firstName = idMap["given_name"];
-        userLogin.lastName = idMap["family_name"];
-        userLogin.idToken = idToken;
 
         // Init app
         Navigator.pushReplacement(

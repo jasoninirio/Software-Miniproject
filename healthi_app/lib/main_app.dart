@@ -67,7 +67,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('healthi'),
+        title: Text('Homepage'),
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
@@ -87,14 +87,18 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('profile'),
+        title: Text('${UserLogin.firstName} ${UserLogin.lastName}'),
         centerTitle: true,
-        backgroundColor: Colors.yellow,
+        backgroundColor: Colors.green,
       ),
       body: Center(
         child: Column(
           children: <Widget>[
-            Text("${userLogin.firstName} ${userLogin.lastName}"),
+            ElevatedButton(
+                onPressed: () {
+                  print("Pressed button to add recipe");
+                },
+                child: Text("Add Recipe"))
           ],
         ),
       ),

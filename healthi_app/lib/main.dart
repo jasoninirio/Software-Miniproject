@@ -27,7 +27,7 @@ class _SignIn_state extends State<SignIn> {
       theme: ThemeData(
         primaryColor: Colors.green,
       ),
-      home: LoginScreen(),
+      home: Splash(),
     );
   }
 }
