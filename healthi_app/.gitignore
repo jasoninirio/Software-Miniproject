@@ -9,9 +9,9 @@
 .history
 .svn/
 *.env
-*.plist
+; *.plist
 ; /android/app/google-services.json
-**/ios/Runner/.plist
+; **/ios/Runner/.plist
 
 # IntelliJ related
 *.iml
