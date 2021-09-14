@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
       UserCredential result = await auth.signInWithCredential(authCredential);
       User? user = result.user;
 
-      // Add to Cloud FireStore
+      // Add to Cloud FireStore - Check for existing users
       print("Signing in");
       if (result != null) {
         firestoreInstance.collection('Users').doc(user!.uid).set({

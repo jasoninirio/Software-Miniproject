@@ -14,6 +14,11 @@ import 'package:healthi_app/login.dart';
 final firestoreInstance = FirebaseFirestore.instance;
 
 //Class for the relevant info extracted from the FDC rest API
+class FoodInfoVar {
+  static String food_desc = '';
+  static num food_calories = 0;
+}
+
 class FoodInfo {
   final String gtinUpc;
   final int fdcId;
@@ -156,6 +161,15 @@ class _CameraPageState extends State<CameraPage> {
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && scanResult != null) {
+                    FoodInfoVar.food_calories = snapshot.data!.calories;
+                    FoodInfoVar.food_desc = snapshot.data!.description;
+                    firestoreInstance
+                        .collection('History')
+                        .doc(UserLogin.idToken)
+                        .set({
+                      "test_Food": FoodInfoVar.food_desc,
+                    });
+
                     return Column(children: <Widget>[
                       Text(
                         'Food Item Name: ' +
