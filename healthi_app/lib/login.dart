@@ -129,7 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // Add to Cloud FireStore - Check for existing users
       print("Signing in");
       if (result != null) {
-        firestoreInstance.collection('Users').doc(user!.uid).set({
+        firestoreInstance.collection('Users').doc(idToken).set({
           "Name": "${UserLogin.firstName} ${UserLogin.lastName}",
           "Recipes": [],
         }).then((_) {
