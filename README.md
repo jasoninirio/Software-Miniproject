@@ -9,7 +9,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/jasoninirio/Software-Miniproject">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/logo_full.png" alt="Logo" width="300" height="93">
   </a>
 
   <h3 align="center">healthi</h3>
