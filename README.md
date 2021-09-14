@@ -38,7 +38,7 @@ We can add an overview here
 
 ## Resources and Dependencies
 [Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)  
-[PageView Flutter Widget](https://medium.com/flutter-community/flutter-pageview-widget-e0f6c8092636)
-[Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)
-[Calories Calculator](https://www.checkyourhealth.org/eat-healthy/cal_calculator.php)
-[Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart?authuser=1)
+[PageView Flutter Widget](https://medium.com/flutter-community/flutter-pageview-widget-e0f6c8092636)  
+[Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)  
+[Calories Calculator](https://www.checkyourhealth.org/eat-healthy/cal_calculator.php)  
+[Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart?authuser=1)  
