@@ -126,14 +126,8 @@ class _LoginScreenState extends State<LoginScreen> {
       UserCredential result = await auth.signInWithCredential(authCredential);
       User? user = result.user;
 
-      // Get Credentials from login
-      Map<String, dynamic> idMap = parseJwt(idToken!);
-
-      UserLogin.firstName = idMap["given_name"];
-      UserLogin.lastName = idMap["family_name"];
-      UserLogin.idToken = idToken;
-
       // Add to Cloud FireStore
+      print("Signing in");
       if (result != null) {
         firestoreInstance.collection('Users').doc(user!.uid).set({
           "Name": "${UserLogin.firstName} ${UserLogin.lastName}",
@@ -141,6 +135,13 @@ class _LoginScreenState extends State<LoginScreen> {
         }).then((_) {
           print("Success!");
         });
+
+        // Get Credentials from login
+        Map<String, dynamic> idMap = parseJwt(idToken!);
+
+        UserLogin.firstName = idMap["given_name"];
+        UserLogin.lastName = idMap["family_name"];
+        UserLogin.idToken = idToken;
 
         // Init app
         Navigator.pushReplacement(
