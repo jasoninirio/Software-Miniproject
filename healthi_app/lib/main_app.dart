@@ -74,7 +74,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Homepage'),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.greenAccent[700],
       ),
       body: Center(
         child: Column(
@@ -94,7 +94,7 @@ class ProfilePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('${UserLogin.firstName} ${UserLogin.lastName}'),
         centerTitle: true,
-        backgroundColor: Colors.green,
+        backgroundColor: Colors.greenAccent[700],
       ),
       body: Center(
         child: Column(
@@ -197,7 +197,15 @@ class _CameraPageState extends State<CameraPage> {
                             ' kcal',
                         style: TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
-                      )
+                      ),
+                      SizedBox(height: 40),
+                      Text(
+                          'Would you like to add this item to an existing recipe?',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center),
+                      SizedBox(height: 10),
+                      ElevatedButton(onPressed: null, child: Text('Yes')),
+                      ElevatedButton(onPressed: null, child: Text('No')),
                     ]);
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}');
