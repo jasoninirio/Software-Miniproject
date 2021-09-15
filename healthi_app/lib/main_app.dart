@@ -2,6 +2,7 @@
 // import 'dart:js'
 // import 'dart:html';
 import 'dart:async';
+import 'dart:core';
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -87,7 +88,69 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class ProfilePage extends StatelessWidget {
+// Profile page - allows user to add recipes
+class ProfilePage extends StatefulWidget {
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  TextEditingController _textFieldController = TextEditingController();
+
+  String? recipeName;
+  String _chosenRecipe;
+  var items = <String>[firestoreInstance.collection("Recipes").doc(UserLogin.idToken).get()];
+
+  Future<void> _displayTextInputDialog(BuildContext context) async{
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Add a Recipe'),
+            content: TextField(
+              onChanged: (value) {
+                setState(() {
+                  recipeName = value;
+                });
+              },
+              controller: _textFieldController,
+              decoration: InputDecoration(hintText: "Recipe Name"),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.red,
+                textColor: Colors.white,
+                child: Text('Cancel'),
+                onPressed: () {
+                  setState(() {
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+              FlatButton(
+                color: Colors.green,
+                textColor: Colors.white,
+                child: Text('Add'),
+                onPressed: () {
+                  setState(() {
+                    if (recipeName != null)
+                    {
+                        firestoreInstance
+                          .collection('Recipes')
+                          .doc(UserLogin.idToken)
+                          .update({
+                        "${recipeName}": [],
+                      });
+                    }
+                    Navigator.pop(context);
+                  });
+                },
+              ),
+            ],
+          );
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,11 +162,27 @@ class ProfilePage extends StatelessWidget {
       body: Center(
         child: Column(
           children: <Widget>[
+            DropdownButton(
+              value: _chosenRecipe,
+              icon: Icon(Icons.keyboard_arrow_down),
+              items:items.map<DropdownMenuItem<String>>((items) {
+                    return DropdownMenuItem(
+                        value: items,
+                        child: Text(items)
+                    );
+                }).toList(),
+              onChanged: (String value){
+                setState(() {
+                    _chosenRecipe = value;
+                });
+              },
+            ),
             ElevatedButton(
                 onPressed: () {
-                  print("Pressed button to add recipe");
+                  _displayTextInputDialog(context);
                 },
-                child: Text("Add Recipe"))
+                child: Text("Add Recipe")
+            ),
           ],
         ),
       ),
@@ -111,6 +190,7 @@ class ProfilePage extends StatelessWidget {
   }
 }
 
+// Camera page - has barcode scanner that calls FDC API
 class CameraPage extends StatefulWidget {
   @override
   _CameraPageState createState() => _CameraPageState();
@@ -135,7 +215,7 @@ class _CameraPageState extends State<CameraPage> {
           title: Text('Scan a Food Item!'),
           centerTitle: true,
           backgroundColor: Colors.greenAccent[700]),
-      backgroundColor: Colors.lime[100],
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -166,8 +246,8 @@ class _CameraPageState extends State<CameraPage> {
                     firestoreInstance
                         .collection('History')
                         .doc(UserLogin.idToken)
-                        .set({
-                      "test_Food": FoodInfoVar.food_desc,
+                        .update({
+                      "${FoodInfoVar.food_desc}": FoodInfoVar.food_calories,
                     });
 
                     return Column(children: <Widget>[

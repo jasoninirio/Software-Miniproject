@@ -139,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
         firestoreInstance.collection('Users').doc(idToken).set({
           "Name": "${UserLogin.firstName} ${UserLogin.lastName}",
           "Recipes": [],
+          "History": [],
         }).then((_) {
           print("Success!");
         });
