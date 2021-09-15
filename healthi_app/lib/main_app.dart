@@ -135,7 +135,7 @@ class _CameraPageState extends State<CameraPage> {
           title: Text('Scan a Food Item!'),
           centerTitle: true,
           backgroundColor: Colors.greenAccent[700]),
-      backgroundColor: Colors.lime[100],
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -166,7 +166,7 @@ class _CameraPageState extends State<CameraPage> {
                     firestoreInstance
                         .collection('History')
                         .doc(UserLogin.idToken)
-                        .set({
+                        .update({
                       "test_Food": FoodInfoVar.food_desc,
                     });
 
