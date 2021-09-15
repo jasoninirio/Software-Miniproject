@@ -129,19 +129,19 @@ class _LoginScreenState extends State<LoginScreen> {
       // Add to Cloud FireStore - Check for existing users
       print("Signing in");
       if (result != null) {
-        firestoreInstance.collection('Users').doc(idToken).set({
-          "Name": "${UserLogin.firstName} ${UserLogin.lastName}",
-          "Recipes": [],
-        }).then((_) {
-          print("Success!");
-        });
-
         // Get Credentials from login
         Map<String, dynamic> idMap = parseJwt(idToken!);
 
         UserLogin.firstName = idMap["given_name"];
         UserLogin.lastName = idMap["family_name"];
         UserLogin.idToken = idToken;
+
+        firestoreInstance.collection('Users').doc(idToken).set({
+          "Name": "${UserLogin.firstName} ${UserLogin.lastName}",
+          "Recipes": [],
+        }).then((_) {
+          print("Success!");
+        });
 
         // Init app
         Navigator.pushReplacement(
