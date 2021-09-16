@@ -286,6 +286,10 @@ class _CameraPageState extends State<CameraPage> {
   String? scanResult = null;
   late Future<FoodInfo> futureFoodInfo;
 
+  Future _addtoRecipe(BuildContext context) async {
+    print("hello from add to recipe");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -375,7 +379,12 @@ class _CameraPageState extends State<CameraPage> {
                           style: TextStyle(fontSize: 16),
                           textAlign: TextAlign.center),
                       SizedBox(height: 10),
-                      ElevatedButton(onPressed: () {}, child: Text('Yes')),
+                      ElevatedButton(
+                          onPressed: () {
+                            print("Pressed yes, adding to recipe");
+                            _addtoRecipe(context);
+                          },
+                          child: Text('Yes')),
                       ElevatedButton(onPressed: null, child: Text('No')),
                     ]);
                   } else if (snapshot.hasError) {
