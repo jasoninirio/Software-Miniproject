@@ -42,6 +42,8 @@ This app was developed using Flutter by Google. In addition, it utilizes Firebas
 ## Resources and Dependencies
 [Applying Firebase to Flutter](https://firebase.google.com/docs/flutter/setup?platform=ios)  
 [PageView Flutter Widget](https://medium.com/flutter-community/flutter-pageview-widget-e0f6c8092636)  
-[Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)  
+[Barcode Scanner](https://pub.dev/packages/flutter_barcode_scanner)
+[Accessing API Data](https://flutter.dev/docs/cookbook/networking/fetch-data)
+[Implementing a Dynamic Listview Widget](https://googleflutter.com/flutter-add-item-to-listview-dynamically/)
 [Calories Calculator](https://www.checkyourhealth.org/eat-healthy/cal_calculator.php)  
 [Cloud Firestore](https://firebase.google.com/docs/firestore/quickstart?authuser=1)  
