@@ -128,21 +128,40 @@ class _LoginScreenState extends State<LoginScreen> {
 
       // Add to Cloud FireStore - Check for existing users
       print("Signing in");
-      if (result != null) {
+      if (result != null && user!.uid != null) {
         // Get Credentials from login
         Map<String, dynamic> idMap = parseJwt(idToken!);
 
         UserLogin.firstName = idMap["given_name"];
         UserLogin.lastName = idMap["family_name"];
-        UserLogin.idToken = idToken;
+        // UserLogin.idToken = idToken;
+        UserLogin.idToken = user.uid;
 
-        firestoreInstance.collection('Users').doc(idToken).set({
-          "Name": "${UserLogin.firstName} ${UserLogin.lastName}",
-          "Recipes": [],
-          "History": [],
-        }).then((_) {
-          print("Success!");
-        });
+        var checkRef = firestoreInstance.collection('Users').doc(user.uid);
+        var doc = await checkRef.get();
+
+        if (!doc.exists) {
+          print("creating new user");
+          firestoreInstance.collection('Users').doc(user.uid).set({
+            "Name": "${UserLogin.firstName} ${UserLogin.lastName}",
+          }).then((_) {
+            print("Added to Users");
+          });
+
+          firestoreInstance.collection('Recipes').doc(user.uid).set({
+            'recipe': [],
+          }).then((_) {
+            print("Added to Recipes");
+          });
+
+          firestoreInstance.collection('History').doc(user.uid).set({
+            'Food': [],
+          }).then((_) {
+            print("Added to History");
+          });
+        }
+        print('logging user in');
+        print('USERLOGIN IDTOKEN: ${UserLogin.idToken}');
 
         // Init app
         Navigator.pushReplacement(

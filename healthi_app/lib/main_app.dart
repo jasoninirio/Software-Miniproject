@@ -14,8 +14,7 @@ import 'package:healthi_app/login.dart';
 // Connecting to Cloud Firestore for creating recipes, adding ingredients, etc.
 final firestoreInstance = FirebaseFirestore.instance;
 
-//List of food items in the History listview
-final List<String> foodHistory = <String>[];
+void setState(Null Function() param0) {}
 
 //Class for the relevant info extracted from the FDC rest API
 class FoodInfoVar {
@@ -74,16 +73,54 @@ class _App_PageViewState extends State<App_PageView> {
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Stream<DocumentSnapshot> data = firestoreInstance
+        .collection('History')
+        .doc(UserLogin.idToken)
+        .snapshots();
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Homepage'),
+        title: Text('Your Food History'),
         centerTitle: true,
         backgroundColor: Colors.greenAccent[700],
       ),
       body: Center(
         child: Column(
           children: <Widget>[
-            Text("this is the homepage"),
+            SizedBox(height: 15),
+            Expanded(
+              child: StreamBuilder(
+                  stream: data,
+                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      var foodHistory = snapshot.data!;
+                      var foodItems = foodHistory['Food'];
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(8),
+                        itemCount: foodItems != null ? foodItems.length : 0,
+                        itemBuilder: (_, int index) {
+                          return Container(
+                            height: 50,
+                            margin: EdgeInsets.all(2),
+                            color: Colors.lime[100],
+                            child: Center(
+                              child: Text(
+                                "${foodItems[index]['Name']} - ${foodItems[index]['Calories']} KCal.",
+                                style: TextStyle(fontSize: 16),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Container();
+                    }
+                  }),
+            ),
+            SizedBox(height: 300),
           ],
         ),
       ),
@@ -98,17 +135,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Stream<DocumentSnapshot> rdata = firestoreInstance
+      .collection('Recipes')
+      .doc(UserLogin.idToken)
+      .snapshots();
   TextEditingController _textFieldController = TextEditingController();
 
   String? recipeName;
-  // String _chosenRecipe = '';
-  // var items = <String>[
-  //   firestoreInstance
-  //       .collection("Recipes")
-  //       .doc(UserLogin.idToken)
-  //       .get()
-  //       .toString()
-  // ];
 
   Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
@@ -118,40 +151,50 @@ class _ProfilePageState extends State<ProfilePage> {
             title: Text('Add a Recipe'),
             content: TextField(
               onChanged: (value) {
-                setState(() {
-                  recipeName = value;
-                });
+                recipeName = value;
               },
               controller: _textFieldController,
               decoration: InputDecoration(hintText: "Recipe Name"),
             ),
             actions: <Widget>[
-              FlatButton(
-                color: Colors.red,
-                textColor: Colors.white,
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.red,
+                  textStyle: TextStyle(color: Colors.white),
+                ),
                 child: Text('Cancel'),
                 onPressed: () {
-                  setState(() {
-                    Navigator.pop(context);
-                  });
+                  Navigator.pop(context);
                 },
               ),
-              FlatButton(
-                color: Colors.green,
-                textColor: Colors.white,
+              TextButton(
+                style: TextButton.styleFrom(
+                  primary: Colors.green,
+                  textStyle: TextStyle(color: Colors.white),
+                ),
                 child: Text('Add'),
                 onPressed: () {
-                  setState(() {
-                    if (recipeName != null) {
-                      firestoreInstance
-                          .collection('Recipes')
-                          .doc(UserLogin.idToken)
-                          .update({
-                        "${recipeName}": [],
-                      });
-                    }
-                    Navigator.pop(context);
-                  });
+                  print("pressed");
+                  if (recipeName != null || recipeName!.isEmpty) {
+                    print("adding to firestore");
+
+                    var recipeInfo = new Map<String, dynamic>();
+                    recipeInfo = {
+                      "Name": recipeName,
+                      "Ingredients": [],
+                      "Calories": 0
+                    };
+
+                    firestoreInstance
+                        .collection('Recipes')
+                        .doc(UserLogin.idToken)
+                        .update({
+                      "recipe": FieldValue.arrayUnion([recipeInfo])
+                    });
+                  } else {
+                    print("null recipe name");
+                  }
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -163,53 +206,69 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('${UserLogin.firstName} ${UserLogin.lastName}'),
+        title: Text('Welcome, ${UserLogin.firstName} ${UserLogin.lastName}'),
         centerTitle: true,
         backgroundColor: Colors.greenAccent[700],
       ),
       body: Center(
         child: Column(
           children: <Widget>[
-            SizedBox(height: 15),
-            Text('Your Food History:',
-                style: TextStyle(fontSize: 25, color: Colors.teal[900]),
-                textAlign: TextAlign.center),
             Expanded(
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    padding: const EdgeInsets.all(8),
-                    itemCount: foodHistory.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        height: 50,
-                        margin: EdgeInsets.all(2),
-                        color: Colors.lime[100],
-                        child: Center(
-                            child: Text(
-                          '${foodHistory[index]})',
-                          style: TextStyle(fontSize: 16),
-                          textAlign: TextAlign.center,
-                        )),
+              child: StreamBuilder(
+                  stream: rdata,
+                  builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.active) {
+                      var recipes = snapshot.data!;
+                      var items = recipes['recipe'];
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        padding: const EdgeInsets.all(8),
+                        itemCount: items != null ? items.length : 0,
+                        itemBuilder: (_, int index) {
+                          final children = <Widget>[];
+                          for (var i = 0;
+                              i < items[index]['Ingredients'].length;
+                              i++) {
+                            children.add(new ListTile(
+                              title: Text("${items[index]['Ingredients'][i]}"),
+                            ));
+                          }
+                          children.add(
+                            new Container(
+                                alignment: Alignment.bottomRight,
+                                child: new FloatingActionButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CameraPage()),
+                                    );
+                                  },
+                                  backgroundColor: Colors.green,
+                                  child: Icon(Icons.add),
+                                )),
+                          );
+                          return ExpansionTile(
+                            title: Text("${items[index]['Name']}"),
+                            subtitle: Text(
+                                "${items[index]['Calories'].toString()} KCal"),
+                            children: children,
+                          );
+                        },
                       );
-                    })),
-            SizedBox(height: 300),
-            // DropdownButton(
-            //   value: _chosenRecipe,
-            //   icon: Icon(Icons.keyboard_arrow_down),
-            //   items: items.map<DropdownMenuItem<String>>((items) {
-            //     return DropdownMenuItem(value: items, child: Text(items));
-            //   }).toList(),
-            //   onChanged: (String value) {
-            //     setState(() {
-            //       _chosenRecipe = value;
-            //     });
-            //   },
-            // ),
+                    } else {
+                      return Container();
+                    }
+                  }),
+            ),
             ElevatedButton(
-                onPressed: () {
-                  _displayTextInputDialog(context);
-                },
-                child: Text("Add Recipe")),
+              onPressed: () {
+                _displayTextInputDialog(context);
+              },
+              style: ElevatedButton.styleFrom(primary: Colors.green),
+              child: Text("Add Recipe"),
+            ),
           ],
         ),
       ),
@@ -266,19 +325,20 @@ class _CameraPageState extends State<CameraPage> {
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && scanResult != null) {
-                    foodHistory.insert(
-                        0,
-                        snapshot.data!.description +
-                            ' (' +
-                            snapshot.data!.calories.toString() +
-                            ' kcal'); //Add the scanned item to foodHistory list
                     FoodInfoVar.food_calories = snapshot.data!.calories;
                     FoodInfoVar.food_desc = snapshot.data!.description;
+
+                    var foodInfo = new Map<String, dynamic>();
+                    foodInfo = {
+                      "Name": "${FoodInfoVar.food_desc}",
+                      "Calories": "${FoodInfoVar.food_calories}"
+                    };
+
                     firestoreInstance
                         .collection('History')
                         .doc(UserLogin.idToken)
                         .update({
-                      "${FoodInfoVar.food_desc}": FoodInfoVar.food_calories,
+                      "Food": FieldValue.arrayUnion([foodInfo])
                     });
 
                     return Column(children: <Widget>[
@@ -315,7 +375,7 @@ class _CameraPageState extends State<CameraPage> {
                           style: TextStyle(fontSize: 16),
                           textAlign: TextAlign.center),
                       SizedBox(height: 10),
-                      ElevatedButton(onPressed: null, child: Text('Yes')),
+                      ElevatedButton(onPressed: () {}, child: Text('Yes')),
                       ElevatedButton(onPressed: null, child: Text('No')),
                     ]);
                   } else if (snapshot.hasError) {
@@ -345,7 +405,9 @@ class _CameraPageState extends State<CameraPage> {
 
     if (!mounted) return;
 
-    setState(() => this.scanResult = scanResult);
+    setState(() {
+      this.scanResult = scanResult;
+    });
   }
 
   Future<FoodInfo> fetchFoodInfo(String barcode) async {
