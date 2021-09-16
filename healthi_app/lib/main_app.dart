@@ -405,7 +405,9 @@ class _CameraPageState extends State<CameraPage> {
 
     if (!mounted) return;
 
-    setState(() this.scanResult => scanResult);
+    setState(() {
+      this.scanResult = scanResult;
+    });
   }
 
   Future<FoodInfo> fetchFoodInfo(String barcode) async {
