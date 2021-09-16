@@ -14,6 +14,9 @@ import 'package:healthi_app/login.dart';
 // Connecting to Cloud Firestore for creating recipes, adding ingredients, etc.
 final firestoreInstance = FirebaseFirestore.instance;
 
+//List of food items in the History listview
+final List<String> foodHistory = <String>[];
+
 //Class for the relevant info extracted from the FDC rest API
 class FoodInfoVar {
   static String food_desc = '';
@@ -98,10 +101,16 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController _textFieldController = TextEditingController();
 
   String? recipeName;
-  String _chosenRecipe;
-  var items = <String>[firestoreInstance.collection("Recipes").doc(UserLogin.idToken).get()];
+  // String _chosenRecipe = '';
+  // var items = <String>[
+  //   firestoreInstance
+  //       .collection("Recipes")
+  //       .doc(UserLogin.idToken)
+  //       .get()
+  //       .toString()
+  // ];
 
-  Future<void> _displayTextInputDialog(BuildContext context) async{
+  Future<void> _displayTextInputDialog(BuildContext context) async {
     return showDialog(
         context: context,
         builder: (context) {
@@ -133,9 +142,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Text('Add'),
                 onPressed: () {
                   setState(() {
-                    if (recipeName != null)
-                    {
-                        firestoreInstance
+                    if (recipeName != null) {
+                      firestoreInstance
                           .collection('Recipes')
                           .doc(UserLogin.idToken)
                           .update({
@@ -162,27 +170,46 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Center(
         child: Column(
           children: <Widget>[
-            DropdownButton(
-              value: _chosenRecipe,
-              icon: Icon(Icons.keyboard_arrow_down),
-              items:items.map<DropdownMenuItem<String>>((items) {
-                    return DropdownMenuItem(
-                        value: items,
-                        child: Text(items)
-                    );
-                }).toList(),
-              onChanged: (String value){
-                setState(() {
-                    _chosenRecipe = value;
-                });
-              },
-            ),
+            SizedBox(height: 15),
+            Text('Your Food History:',
+                style: TextStyle(fontSize: 25, color: Colors.teal[900]),
+                textAlign: TextAlign.center),
+            Expanded(
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.all(8),
+                    itemCount: foodHistory.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return Container(
+                        height: 50,
+                        margin: EdgeInsets.all(2),
+                        color: Colors.lime[100],
+                        child: Center(
+                            child: Text(
+                          '${foodHistory[index]})',
+                          style: TextStyle(fontSize: 16),
+                          textAlign: TextAlign.center,
+                        )),
+                      );
+                    })),
+            SizedBox(height: 300),
+            // DropdownButton(
+            //   value: _chosenRecipe,
+            //   icon: Icon(Icons.keyboard_arrow_down),
+            //   items: items.map<DropdownMenuItem<String>>((items) {
+            //     return DropdownMenuItem(value: items, child: Text(items));
+            //   }).toList(),
+            //   onChanged: (String value) {
+            //     setState(() {
+            //       _chosenRecipe = value;
+            //     });
+            //   },
+            // ),
             ElevatedButton(
                 onPressed: () {
                   _displayTextInputDialog(context);
                 },
-                child: Text("Add Recipe")
-            ),
+                child: Text("Add Recipe")),
           ],
         ),
       ),
@@ -199,12 +226,10 @@ class CameraPage extends StatefulWidget {
 class _CameraPageState extends State<CameraPage> {
   String? scanResult = null;
   late Future<FoodInfo> futureFoodInfo;
-  String myCode = '035107001247';
 
   @override
   void initState() {
     super.initState();
-
     // futureFoodInfo = fetchFoodInfo();
   }
 
@@ -241,6 +266,12 @@ class _CameraPageState extends State<CameraPage> {
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && scanResult != null) {
+                    foodHistory.insert(
+                        0,
+                        snapshot.data!.description +
+                            ' (' +
+                            snapshot.data!.calories.toString() +
+                            ' kcal'); //Add the scanned item to foodHistory list
                     FoodInfoVar.food_calories = snapshot.data!.calories;
                     FoodInfoVar.food_desc = snapshot.data!.description;
                     firestoreInstance
@@ -296,12 +327,6 @@ class _CameraPageState extends State<CameraPage> {
                 },
               ),
             ),
-            // //Back Button
-            // ElevatedButton(
-            //     onPressed: () {
-            //       scanResult = null;
-            //     },
-            //     child: Text('Scan new item')),
           ],
         ),
       ),
