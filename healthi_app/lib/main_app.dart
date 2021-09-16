@@ -409,18 +409,27 @@ class _CameraPageState extends State<CameraPage> {
   Future scanBarcode() async {
     String scanResult = '';
 
+    print('Trying scan barcode');
     try {
       scanResult = await FlutterBarcodeScanner.scanBarcode(
           "#6CEE5D", "Cancel", true, ScanMode.BARCODE);
+
+      print('Barcode scanned');
     } on PlatformException {
       scanResult = 'Failed to get platform version.';
     }
 
     if (!mounted) return;
 
-    setState(() {
-      this.scanResult = scanResult;
-    });
+    this.scanResult = scanResult;
+
+    print('$scanResult');
+
+    // setState(() {
+    //   this.scanResult = scanResult;
+
+    //   print('$scanResult');
+    // });
 
     // setState(() => this.scanResult = scanResult);
   }
