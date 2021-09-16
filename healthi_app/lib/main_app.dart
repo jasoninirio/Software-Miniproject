@@ -313,7 +313,9 @@ class _CameraPageState extends State<CameraPage> {
                   primary: Colors.greenAccent[700], onPrimary: Colors.black),
               icon: Icon(Icons.camera_alt_outlined),
               label: Text('Start Scan', style: TextStyle(fontSize: 25)),
-              onPressed: scanBarcode,
+              onPressed: () {
+                scanResult = scanBarcode().toString();
+              },
             ),
             SizedBox(height: 20),
             Text(
@@ -328,7 +330,7 @@ class _CameraPageState extends State<CameraPage> {
               child: FutureBuilder<FoodInfo>(
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
-                  if (snapshot.hasData && scanResult != null) {
+                  if (snapshot.hasData /*&& scanResult != null*/) {
                     print('Scanned item');
                     FoodInfoVar.food_calories = snapshot.data!.calories;
                     FoodInfoVar.food_desc = snapshot.data!.description;
@@ -406,7 +408,7 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
 
-  Future scanBarcode() async {
+  Future<String?> scanBarcode() async {
     String scanResult = '';
 
     print('Trying scan barcode');
@@ -419,11 +421,15 @@ class _CameraPageState extends State<CameraPage> {
       scanResult = 'Failed to get platform version.';
     }
 
-    if (!mounted) return;
+    if (!mounted) return "";
+
+    print('$scanResult');
 
     this.scanResult = scanResult;
 
-    print('$scanResult');
+    return this.scanResult;
+
+    // this.scanResult = scanResult;
 
     // setState(() {
     //   this.scanResult = scanResult;
