@@ -27,7 +27,10 @@
 </p>
 
 ## About The Project / Overview
-We can add an overview here
+This project implements an app called *healthi* that allows users to determine the amount of calories in a food item by scanning its barcode, add scanned food items to recipes, and track the total calories they have consumed. The first time the user launches the app, they will be prompted to sign in via their Google account. This will create a profile for the user, and they will be able to store their own personal recipes as well as keep track of all of the items they have scanned. The app’s interface consists of three pages: the home page will display the user’s total calorie consumption (center page), the profile page allows the user to browse their history of previously scanned food items and create/view recipes (right page), and the camera page provides the user with a barcode scanner to scan a food item and add it to an existing recipe (left page).
+
+This app was developed using Flutter by Google. In addition, it utilizes Firebase (also by Google) to allow users to create their own profiles and store personalized recipes. The information for scanned food items are obtained from the FoodData Central API through REST access. 
+
 
 ### Built With
 
