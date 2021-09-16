@@ -234,21 +234,21 @@ class _ProfilePageState extends State<ProfilePage> {
                               title: Text("${items[index]['Ingredients'][i]}"),
                             ));
                           }
-                          children.add(
-                            new Container(
-                                alignment: Alignment.bottomRight,
-                                child: new FloatingActionButton(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => CameraPage()),
-                                    );
-                                  },
-                                  backgroundColor: Colors.green,
-                                  child: Icon(Icons.add),
-                                )),
-                          );
+                          // children.add(
+                          //   new Container(
+                          //       alignment: Alignment.bottomRight,
+                          //       child: new FloatingActionButton(
+                          //         onPressed: () {
+                          //           Navigator.push(
+                          //             context,
+                          //             MaterialPageRoute(
+                          //                 builder: (context) => CameraPage()),
+                          //           );
+                          //         },
+                          //         backgroundColor: Colors.green,
+                          //         child: Icon(Icons.add),
+                          //       )),
+                          // );
                           return ExpansionTile(
                             title: Text("${items[index]['Name']}"),
                             subtitle: Text(
@@ -405,9 +405,7 @@ class _CameraPageState extends State<CameraPage> {
 
     if (!mounted) return;
 
-    setState(() {
-      this.scanResult = scanResult;
-    });
+    setState(() this.scanResult => scanResult);
   }
 
   Future<FoodInfo> fetchFoodInfo(String barcode) async {
