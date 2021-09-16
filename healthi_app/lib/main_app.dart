@@ -14,7 +14,7 @@ import 'package:healthi_app/login.dart';
 // Connecting to Cloud Firestore for creating recipes, adding ingredients, etc.
 final firestoreInstance = FirebaseFirestore.instance;
 
-void setState(Null Function() param0) {}
+// void setState(Null Function() param0) {}
 
 //Class for the relevant info extracted from the FDC rest API
 class FoodInfoVar {
@@ -102,7 +102,7 @@ class HomePage extends StatelessWidget {
                         itemCount: foodItems != null ? foodItems.length : 0,
                         itemBuilder: (_, int index) {
                           return Container(
-                            height: 50,
+                            height: 75,
                             margin: EdgeInsets.all(2),
                             color: Colors.lime[100],
                             child: Center(
@@ -120,7 +120,6 @@ class HomePage extends StatelessWidget {
                     }
                   }),
             ),
-            SizedBox(height: 300),
           ],
         ),
       ),
@@ -313,9 +312,7 @@ class _CameraPageState extends State<CameraPage> {
                   primary: Colors.greenAccent[700], onPrimary: Colors.black),
               icon: Icon(Icons.camera_alt_outlined),
               label: Text('Start Scan', style: TextStyle(fontSize: 25)),
-              onPressed: () {
-                scanResult = scanBarcode().toString();
-              },
+              onPressed: scanBarcode,
             ),
             SizedBox(height: 20),
             Text(
@@ -330,7 +327,7 @@ class _CameraPageState extends State<CameraPage> {
               child: FutureBuilder<FoodInfo>(
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
-                  if (snapshot.hasData /*&& scanResult != null*/) {
+                  if (snapshot.hasData && scanResult != null) {
                     print('Scanned item');
                     FoodInfoVar.food_calories = snapshot.data!.calories;
                     FoodInfoVar.food_desc = snapshot.data!.description;
@@ -408,36 +405,21 @@ class _CameraPageState extends State<CameraPage> {
     );
   }
 
-  Future<String?> scanBarcode() async {
-    String scanResult = '';
+  Future scanBarcode() async {
+    String scanResult;
 
-    print('Trying scan barcode');
     try {
       scanResult = await FlutterBarcodeScanner.scanBarcode(
           "#6CEE5D", "Cancel", true, ScanMode.BARCODE);
-
-      print('Barcode scanned');
     } on PlatformException {
       scanResult = 'Failed to get platform version.';
     }
 
-    if (!mounted) return "";
+    if (!mounted) return;
 
-    print('$scanResult');
-
-    this.scanResult = scanResult;
-
-    return this.scanResult;
-
-    // this.scanResult = scanResult;
-
-    // setState(() {
-    //   this.scanResult = scanResult;
-
-    //   print('$scanResult');
-    // });
-
-    // setState(() => this.scanResult = scanResult);
+    setState(() {
+      this.scanResult = scanResult;
+    });
   }
 
   Future<FoodInfo> fetchFoodInfo(String barcode) async {
