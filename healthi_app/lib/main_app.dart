@@ -283,7 +283,7 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
-  String? scanResult = null;
+  String? scanResult;
   late Future<FoodInfo> futureFoodInfo;
 
   @override
@@ -325,6 +325,7 @@ class _CameraPageState extends State<CameraPage> {
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && scanResult != null) {
+                    print('Scanned item');
                     FoodInfoVar.food_calories = snapshot.data!.calories;
                     FoodInfoVar.food_desc = snapshot.data!.description;
 
@@ -382,8 +383,11 @@ class _CameraPageState extends State<CameraPage> {
                     return Text('${snapshot.error}');
                   }
 
+                  print('item not scanned');
                   // By default, show a loading spinner.
-                  return const CircularProgressIndicator();
+                  return const CircularProgressIndicator(
+                      valueColor:
+                          AlwaysStoppedAnimation<Color>(Colors.greenAccent));
                 },
               ),
             ),
@@ -394,7 +398,7 @@ class _CameraPageState extends State<CameraPage> {
   }
 
   Future scanBarcode() async {
-    String scanResult;
+    String scanResult = '';
 
     try {
       scanResult = await FlutterBarcodeScanner.scanBarcode(
@@ -408,6 +412,8 @@ class _CameraPageState extends State<CameraPage> {
     setState(() {
       this.scanResult = scanResult;
     });
+
+    // setState(() => this.scanResult = scanResult);
   }
 
   Future<FoodInfo> fetchFoodInfo(String barcode) async {
