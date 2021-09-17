@@ -82,6 +82,7 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         title: Text('Your Food History'),
         centerTitle: true,
+        leading: Image.asset("assets/leaf.png"),
         backgroundColor: Colors.greenAccent[700],
       ),
       body: Center(
@@ -208,6 +209,7 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Text('Welcome, ${UserLogin.firstName} ${UserLogin.lastName}'),
         centerTitle: true,
+        leading: Image.asset("assets/recipe.png"),
         backgroundColor: Colors.greenAccent[700],
       ),
       body: Center(
@@ -302,6 +304,7 @@ class _CameraPageState extends State<CameraPage> {
       appBar: AppBar(
           title: Text('Scan a Food Item!'),
           centerTitle: true,
+          leading: Image.asset("assets/barcode.png"),
           backgroundColor: Colors.greenAccent[700]),
       backgroundColor: Colors.white,
       body: Center(
