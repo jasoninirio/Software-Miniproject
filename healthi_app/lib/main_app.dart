@@ -122,6 +122,20 @@ class HomePage extends StatelessWidget {
                   }),
             ),
             SizedBox(height: 15),
+            FloatingActionButton.extended(
+              onPressed: () {
+                firestoreInstance
+                    .collection('History')
+                    .doc(UserLogin.idToken)
+                    .update({
+                  "Food": [],
+                });
+              },
+              label: Text("Clear History"),
+              icon: const Icon(Icons.clear),
+              backgroundColor: Colors.green,
+            ),
+            SizedBox(height: 20),
           ],
         ),
       ),
@@ -190,7 +204,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         .collection('Recipes')
                         .doc(UserLogin.idToken)
                         .update({
-                      "recipe": FieldValue.arrayUnion([recipeInfo])
+                      "recipe": FieldValue.arrayUnion([recipeInfo]),
                     });
                   } else {
                     print("null recipe name");
@@ -236,44 +250,68 @@ class _ProfilePageState extends State<ProfilePage> {
                               title: Text("${items[index]['Ingredients'][i]}"),
                             ));
                           }
-                          // children.add(
-                          //   new Container(
-                          //       alignment: Alignment.bottomRight,
-                          //       child: new FloatingActionButton(
-                          //         onPressed: () {
-                          //           Navigator.push(
-                          //             context,
-                          //             MaterialPageRoute(
-                          //                 builder: (context) => CameraPage()),
-                          //           );
-                          //         },
-                          //         backgroundColor: Colors.green,
-                          //         child: Icon(Icons.add),
-                          //       )),
-                          // );
-                          return ExpansionTile(
-                            title: Text("${items[index]['Name']}"),
-                            subtitle: Text(
-                                "${items[index]['Calories'].toString()} KCal"),
-                            children: children,
+
+                          return Dismissible(
+                            direction: DismissDirection.endToStart,
+                            key: UniqueKey(),
+                            onDismissed: (direction) {
+                              setState(() {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            "${items[index]['Name']} deleted")));
+                              });
+
+                              firestoreInstance
+                                  .collection('Recipes')
+                                  .doc(UserLogin.idToken)
+                                  .update({
+                                "recipe": FieldValue.arrayRemove(
+                                  [items[index]],
+                                ),
+                              });
+                              items.removeAt(index);
+                            },
+                            background: Container(
+                              color: Colors.red,
+                            ),
+                            child: ExpansionTile(
+                              title: Text("${items[index]['Name']}"),
+                              subtitle: Text(
+                                  "${items[index]['Calories'].toString()} KCal"),
+                              children: children,
+                            ),
                           );
                         },
                       );
                     } else {
-                      return Container();
+                      return Container(
+                        child: Text(
+                          "Add Some Recipes!",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                      );
                     }
                   }),
             ),
-            ElevatedButton(
-              onPressed: () {
-                _displayTextInputDialog(context);
-              },
-              style: ElevatedButton.styleFrom(primary: Colors.green),
-              child: Text("Add Recipe"),
-            ),
+            // FloatingActionButton(
+            //   onPressed: () {
+            //     _displayTextInputDialog(context);
+            //   },
+            //   child: Icon(Icons.add),
+            //   backgroundColor: Colors.green,
+            // ),
           ],
         ),
       ),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {
+          _displayTextInputDialog(context);
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.green,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
@@ -285,11 +323,117 @@ class CameraPage extends StatefulWidget {
 }
 
 class _CameraPageState extends State<CameraPage> {
+  Stream<DocumentSnapshot> rdata = firestoreInstance
+      .collection('Recipes')
+      .doc(UserLogin.idToken)
+      .snapshots();
   String? scanResult;
+  String selectedRecipe = "";
   late Future<FoodInfo> futureFoodInfo;
 
   Future _addtoRecipe(BuildContext context) async {
-    print("hello from add to recipe");
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                'Select Recipe',
+                textAlign: TextAlign.center,
+              ),
+              centerTitle: true,
+              backgroundColor: Colors.greenAccent[700],
+            ),
+            body: Center(
+              child: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: StreamBuilder(
+                        stream: rdata,
+                        builder: (context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.active) {
+                            var recipes = snapshot.data!;
+                            var items = recipes['recipe'];
+                            var db_data = items;
+
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(8),
+                              itemCount: items != null ? items.length : 0,
+                              itemBuilder: (_, int index) {
+                                return ListTile(
+                                  title: Text("${items[index]['Name']}"),
+                                  subtitle: Text(
+                                      "${items[index]['Calories'].toString()} KCal"),
+                                  enabled: true,
+                                  onTap: () {
+                                    var scannedObj = snapshot.data!['recipe']
+                                        [index]['Ingredients'];
+
+                                    setState(() {
+                                      selectedRecipe = snapshot.data!['recipe']
+                                          [index]['Name'];
+
+                                      var updatedCal = snapshot.data!['recipe']
+                                              [index]['Calories'] +
+                                          FoodInfoVar.food_calories;
+
+                                      scannedObj.add(
+                                          '${FoodInfoVar.food_desc} - ${FoodInfoVar.food_calories} KCal.');
+
+                                      print(scannedObj);
+
+                                      var ingredientInfo =
+                                          new Map<String, dynamic>();
+                                      ingredientInfo = {
+                                        "Name": selectedRecipe,
+                                        "Ingredients": scannedObj,
+                                        "Calories": updatedCal
+                                      };
+
+                                      db_data[index] = ingredientInfo;
+                                    });
+
+                                    firestoreInstance
+                                        .collection("Recipes")
+                                        .doc(UserLogin.idToken)
+                                        .set(
+                                          ({
+                                            "recipe":
+                                                FieldValue.arrayUnion(db_data),
+                                          }),
+                                        );
+
+                                    Navigator.pop(context);
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                        SnackBar(
+                                            content: Text(
+                                                "${FoodInfoVar.food_desc} added to $selectedRecipe")));
+                                  },
+                                );
+                              },
+                            );
+                          } else {
+                            return Container();
+                          }
+                        }),
+                  ),
+                ],
+              ),
+            ),
+            floatingActionButton: new FloatingActionButton.extended(
+              label: Text("Add New Recipe"),
+              onPressed: () {
+                _ProfilePageState()._displayTextInputDialog(context);
+              },
+              icon: Icon(Icons.add),
+              backgroundColor: Colors.green,
+            ),
+            floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+          );
+        });
   }
 
   @override
@@ -311,22 +455,13 @@ class _CameraPageState extends State<CameraPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ElevatedButton.icon(
-              style: ElevatedButton.styleFrom(
-                  primary: Colors.greenAccent[700], onPrimary: Colors.black),
-              icon: Icon(Icons.camera_alt_outlined),
-              label: Text('Start Scan', style: TextStyle(fontSize: 25)),
+            FloatingActionButton.extended(
+              label: Text(scanResult == null ? 'SCAN' : 'SCAN AGAIN'),
+              icon: const Icon(Icons.camera),
+              backgroundColor: Colors.green,
               onPressed: scanBarcode,
             ),
-            SizedBox(height: 20),
-            Text(
-              scanResult == null
-                  ? 'Scan a barcode first!'
-                  : 'You scanned the barcode: $scanResult',
-              style: TextStyle(fontSize: 23),
-              textAlign: TextAlign.center,
-            ),
-            SizedBox(height: 60),
+            SizedBox(height: 80),
             Center(
               child: FutureBuilder<FoodInfo>(
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
@@ -334,7 +469,8 @@ class _CameraPageState extends State<CameraPage> {
                   if (snapshot.hasData && scanResult != null) {
                     print('Scanned item');
                     FoodInfoVar.food_calories = snapshot.data!.calories;
-                    FoodInfoVar.food_desc = snapshot.data!.description;
+                    FoodInfoVar.food_desc =
+                        snapshot.data!.description.toLowerCase();
 
                     var foodInfo = new Map<String, dynamic>();
                     foodInfo = {
@@ -351,21 +487,9 @@ class _CameraPageState extends State<CameraPage> {
 
                     return Column(children: <Widget>[
                       Text(
-                        'Food Item Name: ' +
-                            (snapshot.data!.description).toString(),
-                        style: TextStyle(fontSize: 18),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'Barcode number: ' +
-                            (snapshot.data!.gtinUpc).toString(),
-                        style: TextStyle(fontSize: 18),
-                        textAlign: TextAlign.center,
-                      ),
-                      SizedBox(height: 10),
-                      Text(
-                        'FDC ID Number: ' + (snapshot.data!.fdcId).toString(),
+                        'Food: ' +
+                            (snapshot.data!.description.toLowerCase())
+                                .toString(),
                         style: TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
@@ -378,18 +502,12 @@ class _CameraPageState extends State<CameraPage> {
                         textAlign: TextAlign.center,
                       ),
                       SizedBox(height: 40),
-                      Text(
-                          'Would you like to add this item to an existing recipe?',
-                          style: TextStyle(fontSize: 16),
-                          textAlign: TextAlign.center),
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                          onPressed: () {
-                            print("Pressed yes, adding to recipe");
-                            _addtoRecipe(context);
-                          },
-                          child: Text('Yes')),
-                      ElevatedButton(onPressed: null, child: Text('No')),
+                      FloatingActionButton.extended(
+                          onPressed: () => _addtoRecipe(context),
+                          label: Text('Add to Recipe'),
+                          icon: Icon(Icons.add),
+                          backgroundColor: Colors.green),
+                      SizedBox(height: 20),
                     ]);
                   } else if (snapshot.hasError) {
                     return Text('${snapshot.error}');
