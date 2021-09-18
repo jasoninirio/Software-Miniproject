@@ -71,6 +71,8 @@ class _App_PageViewState extends State<App_PageView> {
 }
 
 class HomePage extends StatelessWidget {
+  // ListWheelScrollView _controller = ListWheelScrollView(itemExtent: 100, );
+
   @override
   Widget build(BuildContext context) {
     Stream<DocumentSnapshot> data = firestoreInstance
@@ -98,29 +100,65 @@ class HomePage extends StatelessWidget {
                       var foodHistory = snapshot.data!;
                       var foodItems = foodHistory['Food'];
 
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(8),
-                        itemCount: foodItems != null ? foodItems.length : 0,
-                        itemBuilder: (_, int index) {
-                          return Container(
-                            height: 75,
-                            margin: EdgeInsets.all(2),
-                            decoration: BoxDecoration(
-                              color: Colors.lightGreen[100],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "${foodItems[index]['Name']} - ${foodItems[index]['Calories']} KCal.",
-                                style: TextStyle(fontSize: 16),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                      return ListWheelScrollView.useDelegate(
+                          itemExtent: 125,
+                          diameterRatio: 5.5,
+                          perspective: 0.003,
+                          physics: BouncingScrollPhysics(),
+                          childDelegate: ListWheelChildBuilderDelegate(
+                              childCount:
+                                  foodItems != null ? foodItems.length : 0,
+                              builder: (context, index) {
+                                return Container(
+                                  height: 75,
+                                  margin: EdgeInsets.all(2),
+                                  decoration: BoxDecoration(
+                                    color: Colors.lightGreen[100],
+                                    gradient: new LinearGradient(colors: [
+                                      Colors.lightGreen.shade100,
+                                      Colors.lightGreen.shade200,
+                                      Colors.lightGreen.shade200,
+                                      Colors.lightGreen.shade100,
+                                    ]),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                  ),
+                                  child: Center(
+                                    child: Text(
+                                      "${foodItems[index]['Name']} - ${foodItems[index]['Calories']} KCal.",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                );
+                              }));
+
+                      // return ListView.builder(
+                      //   shrinkWrap: true,
+                      //   physics: BouncingScrollPhysics(),
+                      //   padding: const EdgeInsets.all(8),
+                      //   itemCount: foodItems != null ? foodItems.length : 0,
+                      //   itemBuilder: (_, int index) {
+                      //     return Container(
+                      //       height: 75,
+                      //       margin: EdgeInsets.all(2),
+                      //       decoration: BoxDecoration(
+                      //         color: Colors.lightGreen[100],
+                      //         borderRadius:
+                      //             BorderRadius.all(Radius.circular(10)),
+                      //       ),
+                      //       child: Center(
+                      //         child: Text(
+                      //           "${foodItems[index]['Name']} - ${foodItems[index]['Calories']} KCal.",
+                      //           style: TextStyle(fontSize: 16),
+                      //           textAlign: TextAlign.center,
+                      //         ),
+                      //       ),
+                      //     );
+                      //   },
+                      // );
                     } else {
                       return Container();
                     }
@@ -299,13 +337,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     }
                   }),
             ),
-            // FloatingActionButton(
-            //   onPressed: () {
-            //     _displayTextInputDialog(context);
-            //   },
-            //   child: Icon(Icons.add),
-            //   backgroundColor: Colors.green,
-            // ),
           ],
         ),
       ),
@@ -472,7 +503,7 @@ class _CameraPageState extends State<CameraPage> {
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && scanResult != null) {
-                    print('Scanned item');
+                    // print('Scanned item');
                     FoodInfoVar.food_calories = snapshot.data!.calories;
                     FoodInfoVar.food_desc =
                         snapshot.data!.description.toLowerCase();
@@ -518,7 +549,7 @@ class _CameraPageState extends State<CameraPage> {
                     return Text('${snapshot.error}');
                   }
 
-                  print('item not scanned');
+                  // print('item not scanned');
                   // By default, show a loading spinner.
                   return const CircularProgressIndicator(
                       valueColor:
