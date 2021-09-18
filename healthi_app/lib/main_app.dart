@@ -503,7 +503,6 @@ class _CameraPageState extends State<CameraPage> {
                 future: futureFoodInfo = fetchFoodInfo(scanResult.toString()),
                 builder: (context, snapshot) {
                   if (snapshot.hasData && scanResult != null) {
-                    // print('Scanned item');
                     FoodInfoVar.food_calories = snapshot.data!.calories;
                     FoodInfoVar.food_desc =
                         snapshot.data!.description.toLowerCase();
@@ -549,7 +548,6 @@ class _CameraPageState extends State<CameraPage> {
                     return Text('${snapshot.error}');
                   }
 
-                  // print('item not scanned');
                   // By default, show a loading spinner.
                   return const CircularProgressIndicator(
                       valueColor:
