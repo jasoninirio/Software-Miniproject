@@ -14,8 +14,6 @@ import 'package:healthi_app/login.dart';
 // Connecting to Cloud Firestore for creating recipes, adding ingredients, etc.
 final firestoreInstance = FirebaseFirestore.instance;
 
-// void setState(Null Function() param0) {}
-
 //Class for the relevant info extracted from the FDC rest API
 class FoodInfoVar {
   static String food_desc = '';
@@ -475,7 +473,6 @@ class _CameraPageState extends State<CameraPage> {
   @override
   void initState() {
     super.initState();
-    // futureFoodInfo = fetchFoodInfo();
   }
 
   @override
