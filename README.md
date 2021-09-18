@@ -20,7 +20,7 @@
     <a href="https://github.com/jasoninirio/Software-Miniproject"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/jasoninirio/Software-Miniproject">View Demo</a>
+    <a href="https://github.com/jasoninirio/Software-Miniproject/blob/main/videos/appDemo.mp4">View Demo</a>
     ·
     <a href="https://github.com/jasoninirio/Software-Miniproject/issues">Report Bug</a>
   </p>
