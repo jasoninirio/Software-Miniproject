@@ -84,6 +84,7 @@ class HomePage extends StatelessWidget {
         centerTitle: true,
         leading: Image.asset("assets/leaf.png"),
         backgroundColor: Colors.greenAccent[700],
+        actions: [Image.asset("assets/plate.png")],
       ),
       body: Center(
         child: Column(
@@ -105,7 +106,11 @@ class HomePage extends StatelessWidget {
                           return Container(
                             height: 75,
                             margin: EdgeInsets.all(2),
-                            color: Colors.lime[100],
+                            decoration: BoxDecoration(
+                              color: Colors.lightGreen[100],
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                            ),
                             child: Center(
                               child: Text(
                                 "${foodItems[index]['Name']} - ${foodItems[index]['Calories']} KCal.",
